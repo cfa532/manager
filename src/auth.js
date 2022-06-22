@@ -1,10 +1,12 @@
 (function(global) {
 console.log("auth.js");  
 var ayApi = ["GetVarByContext", "Act", "Login", "Getvar","Getnodeip", "SwarmLocal","DhtGetAllKeys", "DhtGet", "DhtGets", "SignPPT", "SwarmAddrs"]
+// var global = window.global
 
 function getcurips(){
     //缺省的地址，用于本地调试程序
-    var ips = "127.0.0.1:4800"
+    // var ips = "127.0.0.1:4800"
+    var ips = "192.168.1.104:4800"
     //获取节点链接
     if (window.getParam != null){
         p=window.getParam()

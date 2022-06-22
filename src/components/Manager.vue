@@ -1,25 +1,14 @@
-<template>
-    <div class="main_header">
-        <p class="main_header_title">当前状态</p>
-        <div class="main_header_hint2">
-        本地节点&nbsp;<span class="theme_color">{{localid}}</span>&nbsp;&nbsp;&nbsp;
-        当前浏览&nbsp;&nbsp;<span class="theme_color">{{nodeid}}</span>
-        
-        </div>
-    </div>
-</template>
-
 <script>
 console.log("manager.js")  
-
 var c = localStorage.getItem("selected")
 if (c == null){
     c = "system"
 }
+var global
 
 export default {
     name: "Manager",
-    el: '#leitherbody',
+    // el: '#leitherbody',
     props: ["localid", "nodeid"],
     data() {
         return {
@@ -53,7 +42,7 @@ export default {
         }
     },
     methods: {
-        ontest:  event =>{
+        ontest: event =>{
             console.log("vue.ontest", event)
             global.ontest()
         },
@@ -95,6 +84,27 @@ export default {
             })
            // global.vue.systemdata.systemvars = global.vue.systemdata.oldVars
         }
+    },
+    mounted() {
+        global = window     // which is used inside auth.js
+        global.vue = {}
+        import("/src/auth.js").then((module) => {
+            console.log("module", module)
+        })
+        // var tag = document.createElement("script");
+        // tag.setAttribute("src", "/src/auth.js");
+        // tag.setAttribute("type", 'text/javascript');
+        // document.head.appendChild(tag); 
     }
 }
 </script>
+
+<template>
+    <div class="main_header">
+        <p class="main_header_title">当前状态</p>
+        <div class="main_header_hint2">
+        本地节点&nbsp;<span class="theme_color">{{localid}}</span>&nbsp;&nbsp;&nbsp;
+        当前浏览&nbsp;&nbsp;<span class="theme_color">{{nodeid}}</span>    
+        </div>
+    </div>
+</template>
