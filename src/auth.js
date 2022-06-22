@@ -95,18 +95,20 @@ global.doAll = (api)=>{
             vue.appsdata.apps[iapp].appvers = appvers
             vue.appsdata.apps = vue.appsdata.apps
             return appvers
+        }, err=>{
+            alert(err)
         })
     }
 
     function showapps(api){
-        console.log("showapps")
+        console.log("showapps", api)
         return api.client.Getvar(api.sid, "appinfos").then(apps=>{
             console.log("apps=", apps)
             vue.appsdata.apps = apps
             //请求版本信息
             var ret = []
             for (iapp in apps){
-                ret[iapp] =getappvers(api, iapp)
+                ret[iapp] = getappvers(api, iapp)
             }
             return hprose.Future.all(ret)
         })
@@ -138,7 +140,7 @@ global.doAll = (api)=>{
         }
     )
     
-    api.client.Getvar("", "nodeaddrs").then(
+    api.client.Getvar("", "nodeaddrs", nodeid).then(
         function(ips){
             console.log("ips=", ips, ips.length)
             //vue.mynodedata.hostpk = hostpk
