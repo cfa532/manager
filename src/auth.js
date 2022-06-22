@@ -5,8 +5,7 @@ var ayApi = ["GetVarByContext", "Act", "Login", "Getvar","Getnodeip", "SwarmLoca
 
 function getcurips(){
     //缺省的地址，用于本地调试程序
-    // var ips = "127.0.0.1:4800"
-    var ips = "192.168.1.104:4800"
+    var ips = "127.0.0.1:4800"
     //获取节点链接
     if (window.getParam != null){
         p=window.getParam()
@@ -22,6 +21,8 @@ function getcurips(){
     { //for test
         //ips = "192.168.3.7:8000"
     }
+    console.log("global", global)
+    ips = "192.168.1.104:4800"
     global.vue.ips = ips
     return ips
 }

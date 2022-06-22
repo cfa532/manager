@@ -1,6 +1,6 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <Manager />
+  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+    <Manager />
 </template>
 
 <script>
@@ -8,7 +8,7 @@
 import Manager from './components/Manager.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     Manager
   }

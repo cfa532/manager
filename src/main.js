@@ -4,7 +4,7 @@ import App from './App.vue'
 import './index.css'
 // (function(global) {
 const app = createApp(App)
-app.provide("myGlobal", {"vue":{}})
+// app.provide("myGlobal", {"vue":{}})
 // app.config.globalProperties.$global = {"vue": {}}    // works too
-app.mount('#app')
+app.mount('#leitherbody')
 // })(this || [eval][0]('this'));

@@ -14,7 +14,6 @@
         <div class="main_header_hint2">
         本地节点&nbsp;<span class="theme_color">{{localid}}</span>&nbsp;&nbsp;&nbsp;
         当前浏览&nbsp;&nbsp;<span class="theme_color">{{nodeid}}</span>
-        
         </div>
     </div>`
       })
