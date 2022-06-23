@@ -99,13 +99,10 @@ global.doAll = (api)=>{
         return api.client.Getvar(api.sid, "appinfos").then(apps=>{
             vue.appsdata.apps = apps
             //请求版本信息
-            var ret = []
             console.log("apps=", apps)
             for(var i=0; i<apps.length; i++) {
-                // ret[apps[i]] = getappvers(api, i)
                 getappvers(api, i)
             }
-            // return hprose.Future.all(ret)
         })
     }
 
