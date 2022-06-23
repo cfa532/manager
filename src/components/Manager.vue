@@ -10,7 +10,7 @@ if (c == null){
 
 export default {
     name: "Manager",
-    el: '#leitherbody',
+    // el: '#leitherbody',
     components: {
         headnodestate
         },

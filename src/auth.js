@@ -78,20 +78,17 @@ global.doAll = (api)=>{
         vue.baseUrl = api.baseUrl
         vue.mynodedata.nodeid= api.leitherid
     }
-
     initReply(api)
 
-
     function getappvers(api, iapp) {
-        console.log("getappvers", iapp)
-        var app = vue.appsdata.apps[iapp]
-        console.log("app=", app, "api.sid=", api.sid)
+        // console.log("getappvers", iapp, "api.sid=", api.sid)
+        // var app = vue.appsdata.apps[iapp]
     
-        return api.client.Getvar(api.sid, "appversions", app.iD)
+        return api.client.Getvar(api.sid, "appversions", iapp.iD)
             .then((appvers)=>{
             console.log("appvers=", appvers)
-            vue.appsdata.apps[iapp].appvers = appvers
-            vue.appsdata.apps = vue.appsdata.apps
+            iapp.appvers = appvers
+            // vue.appsdata.apps[iapp].appvers = appvers
             return appvers
         }, err=>{
             alert(err)
@@ -101,13 +98,13 @@ global.doAll = (api)=>{
     function showapps(api){
         console.log("showapps", api)
         return api.client.Getvar(api.sid, "appinfos").then(apps=>{
-            console.log("apps=", apps)
             vue.appsdata.apps = apps
             //请求版本信息
             var ret = []
-            for (iapp in apps){
-                ret[iapp] = getappvers(api, iapp)
-            }
+            console.log("apps=", apps)
+            apps.forEach(e => {
+                ret[e] = getappvers(api, e)
+            });
             return hprose.Future.all(ret)
         })
     }
