@@ -80,17 +80,15 @@ global.doAll = (api)=>{
     }
     initReply(api)
 
-    function getappvers(api, i) {
+    function getappvers(api, iapp) {
         // console.log("getappvers", iapp, "api.sid=", api.sid)
-        var iapp = vue.appsdata.apps[i]
+        // var iapp = vue.appsdata.apps[i]
         return api.client.Getvar(api.sid, "appversions", iapp.iD)
             .then((appvers)=>{
             console.log("appvers=", appvers)
             iapp.appvers = appvers
             // vue.appsdata.apps[iapp].appvers = appvers
             return appvers
-        }, err=>{
-            alert(err)
         })
     }
 
@@ -101,7 +99,7 @@ global.doAll = (api)=>{
             //请求版本信息
             console.log("apps=", apps)
             for(var i=0; i<apps.length; i++) {
-                getappvers(api, i)
+                getappvers(api, vue.appsdata.apps[i])
             }
         })
     }
