@@ -80,10 +80,9 @@ global.doAll = (api)=>{
     }
     initReply(api)
 
-    function getappvers(api, iapp) {
+    function getappvers(api, i) {
         // console.log("getappvers", iapp, "api.sid=", api.sid)
-        // var app = vue.appsdata.apps[iapp]
-    
+        var iapp = vue.appsdata.apps[i]
         return api.client.Getvar(api.sid, "appversions", iapp.iD)
             .then((appvers)=>{
             console.log("appvers=", appvers)
@@ -102,10 +101,11 @@ global.doAll = (api)=>{
             //请求版本信息
             var ret = []
             console.log("apps=", apps)
-            apps.forEach(e => {
-                ret[e] = getappvers(api, e)
-            });
-            return hprose.Future.all(ret)
+            for(var i=0; i<apps.length; i++) {
+                // ret[apps[i]] = getappvers(api, i)
+                getappvers(api, i)
+            }
+            // return hprose.Future.all(ret)
         })
     }
 
