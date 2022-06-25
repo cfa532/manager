@@ -1,6 +1,7 @@
 (function(global) {
 console.log("auth.js");  
-var ayApi = ["GetVarByContext", "Act", "Login", "Getvar","Getnodeip", "SwarmLocal","DhtGetAllKeys", "DhtGet", "DhtGets", "SignPPT", "SwarmAddrs"]
+var ayApi = ["GetVarByContext", "Act", "Login", "Getvar","Getnodeip", "SwarmLocal","DhtGetAllKeys",
+    "DhtGet", "DhtGets", "SignPPT", "SwarmAddrs", "SetObject", "GetObject", "SetData", "GetData"]
 // var global = window.global
 
 function getcurips(){

@@ -1,5 +1,6 @@
 <script>
 import headnodestate from "./HeadNode.vue"
+import Uploader from "./Uploader.vue"
 
 console.log("manager.js")  
 var global
@@ -12,7 +13,7 @@ export default {
     name: "Manager",
     // el: '#leitherbody',
     components: {
-        headnodestate
+        headnodestate, Uploader
         },
     data() {
         return {
@@ -106,6 +107,7 @@ export default {
 <template>
     <div id="leitherframe" v-if="isLogined" style="" class="main_div">
         <div class="sub_second_menu_left">
+            <div @click="select('myfiles')" :class="{sub_second_menu_left_second:true, sub_second_menu_left_second_select:selected==='myfiles'}">文件序列</div>
             <div @click="select('mynode')" :class="{sub_second_menu_left_second:true, sub_second_menu_left_second_select:selected==='mynode'}">我的节点</div>
             <div @click="select('swarm')" :class="{sub_second_menu_left_second:true, sub_second_menu_left_second_select:selected==='swarm'}">节点网络</div>
             <div @click="select('myapp')" :class="{sub_second_menu_left_second:true, sub_second_menu_left_second_select:selected==='myapp'}">我的应用</div>
@@ -264,8 +266,18 @@ export default {
             <!-- <button v-on:click="ontest()">测试</button> -->
         </div>
         <div id="message" v-if="selected==='message'" class="sub_second_iframe_left">
-            互动消息
+            <div class="main_header">
+                <p class="main_header_title">互动消息</p>
+            </div>
         </div>
+        <div id="mefiles" v-if="selected==='myfiles'" class="sub_second_iframe_left">
+            <div class="main_header">
+                <p class="main_header_title">文件列表</p>
+            </div>
+            <div class="main_item">
+                <Uploader></Uploader>
+            </div>
+        </div>        
         <div id="system" v-if="selected==='system'" class="sub_second_iframe_left">
             <headnodestate :localid="systemdata.localnodeid" :nodeid="mynodedata.nodeid"></headnodestate>
 
