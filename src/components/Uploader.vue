@@ -37,33 +37,43 @@ export default {
       this.file = file
     },
     async onSubmit() {
-      const api = window.apiHandler
-      const r = new FileReader()
-      const sliceSize = 1024*1024*10
+      const api = window.apiHandler._value;
+      const r = new FileReader();
+      const sliceSize = 1024*1024*1
+      r.onerror = e=> {
+        console.error("Reading failed for ", this.file.name, e);
+      }
+      r.onprogress = e=> {
+        console.log("Reader progress=", e.loaded);
+      }
 
-      readFileSlice = (i) => {
-        // first slice
-        api.MFOpenTempFile(api.sid).then(fsid => {
-          api.MFSetData(fsid, r.result, i)
-        })
+      r.onload = e=> {
+        console.log("loadend", api);
+        api.client.MFOpenTempFile(api.sid, fsid => {
+          console.log("temp opened", fsid, end);
+          // var readFileSlice = (fsid, start) => {
+          //   // first slice
+          //   var end = min(start+sliceSize, e.target.result.byteLength)
+          //   console.log(end)
+          //   api.client.MFSetData(fsid, r.result.slice(start, end), start, count=>{
+          //     if (end===r.result.byteLength) {
+          //       // last slice done. Convert to Mac file
+          //       console.log("Temp file done, ", fsid, end)
+          //     } else {
+          //       api.client.MFSetData(fsid, start+sliceSize)
+          //     }
+          //   }, err=>{
+          //     console.error("set temp file data error ", err)
+          //   })
+          // }
+          // readFileSlice(fsid, 0);
+        }, err=> {
+          console.error("open temp file error ", err)
+        });
       }
-      r.onerror = e => {
-        console.error("Reading failed for ", this.file.name, e)
-      }
-      r.onprogress = e => {
-        console.log("Reader progress=", e.loaded)
-      }
-      r.onload = (function(f) {
-        return function(e) {
-          // Here you can use `e.target.result` or `f.name`.
-          var flen = e.target.result.byteLength
-          console.log("loadend, len=", flen)
-          readFileSlice(0)
-        };
-      })(this.file);
-      r.readAsArrayBuffer(this.file)
-
-    }
+      // read uploaded file
+      r.readAsArrayBuffer(this.file);
+    } 
   }
 }
 </script>
