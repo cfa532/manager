@@ -36,10 +36,12 @@ export default {
       const file = this.$refs.file.files[0]
       this.file = file
     },
+
+
     async onSubmit() {
       const api = window.apiHandler._value;
       const r = new FileReader();
-      const sliceSize = 1024*1024*1
+      const sliceSize = 1024*512*1
       r.onerror = e=> {
         console.error("Reading failed for ", this.file.name, e);
       }
@@ -47,28 +49,31 @@ export default {
         console.log("Reader progress=", e.loaded);
       }
 
+      function readFileSlice(fsid, start) {
+        // first slice
+        var end = Math.min(start+sliceSize, r.result.byteLength);
+        api.client.MFSetData(fsid, r.result.slice(start, end), start, count=>{
+          if (end===r.result.byteLength) {
+            // last slice done. Convert to Mac file
+            api.client.MFTemp2MacFile(fsid, "", macid=>{
+              console.log("Temp file to MacID=", macid);
+            }, err=>{
+              console.error("Temp to Mac error ", err);
+            });
+          } else {
+            readFileSlice(fsid, start+count)
+          }
+        }, err=>{
+          console.error("set temp file data error ", err);
+        })
+      }
+
       r.onload = e=> {
-        console.log("loadend", api);
         api.client.MFOpenTempFile(api.sid, fsid => {
-          console.log("temp opened", fsid, end);
-          // var readFileSlice = (fsid, start) => {
-          //   // first slice
-          //   var end = min(start+sliceSize, e.target.result.byteLength)
-          //   console.log(end)
-          //   api.client.MFSetData(fsid, r.result.slice(start, end), start, count=>{
-          //     if (end===r.result.byteLength) {
-          //       // last slice done. Convert to Mac file
-          //       console.log("Temp file done, ", fsid, end)
-          //     } else {
-          //       api.client.MFSetData(fsid, start+sliceSize)
-          //     }
-          //   }, err=>{
-          //     console.error("set temp file data error ", err)
-          //   })
-          // }
-          // readFileSlice(fsid, 0);
+          console.log("temp opened", fsid);
+          readFileSlice(fsid, 0);
         }, err=> {
-          console.error("open temp file error ", err)
+          console.error("open temp file error ", err);
         });
       }
       // read uploaded file
