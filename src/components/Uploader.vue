@@ -35,20 +35,15 @@ export default {
     onSelect() {
       const file = this.$refs.file.files[0]
       this.file = file
+      console.log(this.file)
     },
-
-
     async onSubmit() {
       const api = window.apiHandler._value;
       const r = new FileReader();
-      const sliceSize = 1024*512*1
+      const sliceSize = 1024*1024*1
       r.onerror = e=> {
         console.error("Reading failed for ", this.file.name, e);
       }
-      r.onprogress = e=> {
-        console.log("Reader progress=", e.loaded);
-      }
-
       function readFileSlice(fsid, start) {
         // first slice
         var end = Math.min(start+sliceSize, r.result.byteLength);
@@ -57,6 +52,23 @@ export default {
             // last slice done. Convert to Mac file
             api.client.MFTemp2MacFile(fsid, "", macid=>{
               console.log("Temp file to MacID=", macid);
+              // create mmid for this app
+              api.client.MMCreate(api.sid,"","","test_file_list", 2, "", mid=> {
+                console.log("Create MM id=", mid)
+                document.getElementsByTagName("input")[0].value= "" // clear input value
+                api.client.MMOpen(api.sid, mid, "cur", mmsid=>{
+                  console.log("Open MM mmsid=", mmsid);
+                  api.client.Hset(mmsid, "file_list", Date.now().toString(), this.file, id=>{
+                    console.log("Hset id=", id)
+                  }, err=>{
+                    console.error("Hset error=", err)
+                  })
+                }, err=>{
+                  console.error("Open MM error=", err)
+                })
+              }, err=>{
+                console.error("Create MMid error=", err)
+              })
             }, err=>{
               console.error("Temp to Mac error ", err);
             });
@@ -70,7 +82,7 @@ export default {
 
       r.onload = e=> {
         api.client.MFOpenTempFile(api.sid, fsid => {
-          console.log("temp opened", fsid);
+          console.log("temp opened", api.sid, fsid);
           readFileSlice(fsid, 0);
         }, err=> {
           console.error("open temp file error ", err);

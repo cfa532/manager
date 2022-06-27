@@ -100,7 +100,7 @@ export default {
         // tag.setAttribute("src", "/src/auth.js");
         // tag.setAttribute("type", 'text/javascript');
         // document.head.appendChild(tag); 
-    }
+    },
 }
 </script>
 

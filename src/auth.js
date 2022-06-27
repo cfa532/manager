@@ -1,7 +1,8 @@
 (function(global) {
 console.log("auth.js");  
 var ayApi = ["GetVarByContext", "Act", "Login", "Getvar","Getnodeip", "SwarmLocal","DhtGetAllKeys",
-    "DhtGet", "DhtGets", "SignPPT", "SwarmAddrs", "MFOpenTempFile", "MFTemp2MacFile", "MFSetData", "MFGetData"]
+    "DhtGet", "DhtGets", "SignPPT", "SwarmAddrs", "MFOpenTempFile", "MFTemp2MacFile", "MFSetData",
+    "MFGetData", "MMCreate", "MMOpen", "Hset"]
 // var global = window.global
 
 function getcurips(){
@@ -20,7 +21,7 @@ function getcurips(){
         // baseurl = "http://" +  window.location.host + "/"
     }
     { //for test
-        // ips = "192.168.1.104:4800"
+        ips = "192.168.1.104:4800"
     }
     global.vue.ips = ips
     return ips
