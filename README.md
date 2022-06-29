@@ -75,7 +75,7 @@ Hmset(dasid, key string, values ...FVPair) error
  Lindex(dasid, k string, index int32) (interface{}, error)
  Llen(dasid, k string) (int64, error)
  Lset(dasid, k string, index int32, value interface{}) error
- Zadd(dasid, key string, args ...ScorePair) (int64, error)
+ Zadd(dasid, key string, args ...ScorePair) (ret int64, error)
  Zcard(dasid, key string) (int64, error)
  Zcount(dasid, key string, mins, maxs int64) (int64, error)
  Zrem(dasid, key string, members ...string) (int64, error)
@@ -102,3 +102,8 @@ Hmset(dasid, key string, values ...FVPair) error
 
  api用法可以参考redis
  http://redisdoc.com/
+
+ type ScorePair struct {
+ score  int64       // sequence number
+ member string      // content
+}

@@ -20,6 +20,7 @@
 
 <script>
 console.log("file uploader")
+function ScorePair() {}
 
 export default {
   name: "Uploader",
@@ -58,10 +59,15 @@ export default {
                 document.getElementsByTagName("input")[0].value= "" // clear input value
                 api.client.MMOpen(api.sid, mid, "cur", mmsid=>{
                   console.log("Open MM mmsid=", mmsid);
-                  api.client.Hset(mmsid, "file_list", Date.now().toString(), this.file, id=>{
-                    console.log("Hset id=", id)
+                  api.client.Zadd(mmsid, "file_list", {score:Date.now(), member:macid}, ret=>{
+                    console.log("Zadd ret=", ret)
+                    api.client.Hset(mmsid, "file_list_index", macid, fi, ret=>{
+                      console.log("Hset ret=", ret);
+                    }, err=>{
+                      console.error("Hset error=", err)
+                    })
                   }, err=>{
-                    console.error("Hset error=", err)
+                    console.error("Zadd error=", err)
                   })
                 }, err=>{
                   console.error("Open MM error=", err)
@@ -88,6 +94,13 @@ export default {
           console.error("open temp file error ", err);
         });
       }
+      var fi = new ScorePair
+      fi.name = this.file.name
+      fi.lastModified = this.file.lastModified
+      fi.size = this.file.size
+      fi.type = this.file.type
+      console.log(fi)                  
+
       // read uploaded file
       r.readAsArrayBuffer(this.file);
     } 
