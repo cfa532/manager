@@ -99,7 +99,7 @@ export default {
       fi.lastModified = this.file.lastModified
       fi.size = this.file.size
       fi.type = this.file.type
-      console.log(fi)                  
+      console.log(fi)       
 
       // read uploaded file
       r.readAsArrayBuffer(this.file);
