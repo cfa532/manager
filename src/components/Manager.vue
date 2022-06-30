@@ -1,6 +1,7 @@
 <script>
 import headnodestate from "./HeadNode.vue"
 import Uploader from "./Uploader.vue"
+import FileList from "./FileList.vue"
 
 console.log("manager.js")  
 var global
@@ -13,7 +14,7 @@ export default {
     name: "Manager",
     // el: '#leitherbody',
     components: {
-        headnodestate, Uploader
+        headnodestate, Uploader, FileList
         },
     data() {
         return {
@@ -90,11 +91,11 @@ export default {
            // global.vue.systemdata.systemvars = global.vue.systemdata.oldVars
         }
     },
-    mounted() {
+    created() {
         global = window     // which is used inside auth.js as global
         global.vue = this.$data
         import("/src/auth.js").then((module) => {
-            console.log("module", module)
+            console.log("module", module);
         })
         // var tag = document.createElement("script");
         // tag.setAttribute("src", "/src/auth.js");
@@ -261,8 +262,6 @@ export default {
                     </div>
                 </div>
             </div>
-
-      
             <!-- <button v-on:click="ontest()">测试</button> -->
         </div>
         <div id="message" v-if="selected==='message'" class="sub_second_iframe_left">
@@ -276,6 +275,10 @@ export default {
             </div>
             <div class="main_item">
                 <Uploader></Uploader>
+                <hr/>
+                <FileList></FileList>
+            </div>
+            <div class="main_item">
             </div>
         </div>        
         <div id="system" v-if="selected==='system'" class="sub_second_iframe_left">

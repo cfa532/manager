@@ -19,9 +19,9 @@
 </template>
 
 <script>
-console.log("file uploader")
+console.log("file uploader.vue")
 function ScorePair() {}
-
+function FVPair() {}
 export default {
   name: "Uploader",
   components: {
@@ -54,14 +54,17 @@ export default {
             api.client.MFTemp2MacFile(fsid, "", macid=>{
               console.log("Temp file to MacID=", macid);
               // create mmid for this app
-              api.client.MMCreate(api.sid,"","","test_file_list", 2, "", mid=> {
+              api.client.MMCreate(api.sid,"","","file_list", 2, "", mid=> {
                 console.log("Create MM id=", mid)
                 document.getElementsByTagName("input")[0].value= "" // clear input value
                 api.client.MMOpen(api.sid, mid, "cur", mmsid=>{
                   console.log("Open MM mmsid=", mmsid);
-                  api.client.Zadd(mmsid, "file_list", {score:Date.now(), member:macid}, ret=>{
+                  var sp = new ScorePair
+                  sp.score = Date.now()
+                  sp.member = macid
+                  api.client.Zadd(mmsid, "file_list", sp, ret=>{
                     console.log("Zadd ret=", ret)
-                    api.client.Hset(mmsid, "file_list_index", macid, fi, ret=>{
+                    api.client.Hset(mmsid, "file_list", macid, fi, ret=>{
                       console.log("Hset ret=", ret);
                     }, err=>{
                       console.error("Hset error=", err)
@@ -94,7 +97,7 @@ export default {
           console.error("open temp file error ", err);
         });
       }
-      var fi = new ScorePair
+      var fi = new FVPair
       fi.name = this.file.name
       fi.lastModified = this.file.lastModified
       fi.size = this.file.size
