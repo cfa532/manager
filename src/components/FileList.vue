@@ -1,7 +1,7 @@
 <template>
 <div class="file">
     <div v-for="(file, index) in fileList" :key="index">
-        <a @click="loadFile(file.macid, file.size)">{{file.name}}</a>
+        <a href="#" ref="file"  @click.prevent="loadFile(file)">{{file.name}}</a>
     </div>
 </div>
 </template>
@@ -51,14 +51,29 @@ export default {
                 console.error("MM Create error=", err)
             })
         },
-        loadFile: function(macid, fileSize) {
-            console.log("load file content", macid, fileSize)
+        saveBlobFile: function(url, fileName) {
+            var a = document.createElement("a")
+            document.body.appendChild(a)
+            a.style = "display: none"
+            a.href = url
+            a.download = fileName
+            a.click()
+            window.URL.revokeObjectURL(url)
+        },
+        loadFile: function(file) {
+            console.log("load file content", file.macid, file.size)
             var api = window.apiHandler._value
-            api.client.MFOpenMacFile(api.sid, api.mid, macid, fsid=>{
+            api.client.MFOpenMacFile(api.sid, api.mid, file.macid, fsid=>{
                 console.log("Open file fsid=", fsid)
-                api.client.MFGetData(fsid, 0, fileSize, ret=>{
+                api.client.MFGetData(fsid, 0, -1, buf=>{
                     // arraybuffer
-                    console.log(ret.byteLength)
+                    const blob = new Blob([buf], { type: file.type });
+                    // const blob = new Blob([buf], { type: 'application/octet-stream' });
+                    console.log(buf.byteLength, blob)
+                    // this.saveBlobFile(URL.createObjectURL(blob), file.name)
+                    window.open(URL.createObjectURL(blob))
+                }, err=>{
+                    console.error("Get File data error=", err)
                 })
             }, err=>{
                 console.error("Open file error=", err)
