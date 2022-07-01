@@ -21,7 +21,7 @@ function getcurips(){
         // baseurl = "http://" +  window.location.host + "/"
     }
     { //for test
-        ips = "192.168.1.104:4800"
+        // ips = "192.168.1.104:4800"
     }
     global.vue.ips = ips
     return ips
